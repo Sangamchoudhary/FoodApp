@@ -10,6 +10,7 @@ module.exports.getAllReview = async function getAllReview(req, res) {
     res.json({ error: error.message });
   }
 };
+
 module.exports.top3review = async function top3review(req, res) {
   try {
     const reviews = await reviewModel
@@ -24,16 +25,20 @@ module.exports.top3review = async function top3review(req, res) {
     res.json({ error: error.message });
   }
 };
+
 module.exports.getPlanReview = async function getPlanReview(req, res) {
   try {
-    const id = req.params.id;
-    const reviews = await reviewModel.find(id);
-    if (!reviews) return res.json({ message: "no review found with this id" });
-    res.json({ message: "reviews fetched", data: reviews });
+    const planId = req.params.id;
+    let allReviews = await reviewModel.find();
+    allReviews = allReviews.filter((review) => review.plan._id == planId);
+    if (!allReviews)
+      return res.json({ message: "no review found with this id" });
+    res.json({ message: "reviews fetched", data: allReviews });
   } catch (error) {
     res.json({ error: error.message });
   }
 };
+
 module.exports.createReview = async function createReview(req, res) {
   try {
     const id = req.params.plan;
@@ -47,13 +52,16 @@ module.exports.createReview = async function createReview(req, res) {
     res.json({ error: error.message });
   }
 };
+
 module.exports.updateReview = async function updateReview(req, res) {
   try {
-    const id = req.params.id;
+    const planId = req.params.id;
+    const id = req.body.id; //review id from frontend
     if (!id) return res.json({ message: "trying to update wrong review" });
     let dataToBeUpdate = req.body;
     let keys = [];
     for (let key in dataToBeUpdate) {
+      if (key == id) continue;
       keys.push(key);
     }
     let review = await reviewModel.findById(id);
@@ -61,14 +69,16 @@ module.exports.updateReview = async function updateReview(req, res) {
       review[keys[i]] = dataToBeUpdate[keys[i]];
     }
     await review.save();
-    res.json({ message: "plan updated successfully", updatedPlan: plan });
+    res.json({ message: "plan updated successfully", updatedPlan: review     });
   } catch (error) {
     res.json({ error: error.message });
   }
 };
+
 module.exports.deleteReview = async function deleteReview(req, res) {
   try {
-    const id = req.params.id;
+    const planId = req.params.id;
+    const id = req.body.id; //review id from frontend
     if (!id) return res.json({ message: "trying to delete wrong review" });
     let review = await reviewModel.findByIdAndDelete(id);
     res.json({ message: "plan deleted successfully", deletedReview: review });

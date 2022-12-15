@@ -18,8 +18,10 @@ reviewRouter.route("/:id").get(getPlanReview);
 
 reviewRouter.use(protectRoute); // everything after this is protected
 
-reviewRouter.route("/crud/:plan").post(createReview);
-
-reviewRouter.route("/crud/:id").patch(updateReview).delete(deleteReview);
+reviewRouter
+  .route("/crud/:plan")
+  .post(createReview)
+  .patch(updateReview)
+  .delete(deleteReview);
 
 module.exports = reviewRouter;

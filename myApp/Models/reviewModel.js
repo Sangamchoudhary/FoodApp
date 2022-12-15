@@ -20,20 +20,20 @@ const reviewSchema = mongoose.Schema({
     min: 1,
     max: 10,
     required: [true, "review is required"],
-    createdAt: {
-      type: Date,
-      default: Date.now(),
-    },
-    user: {
-      type: mongoose.Schema.ObjectId,
-      ref: "userModel",
-      required: [true, "review must belong to a user"],
-    },
-    plan: {
-      type: mongoose.Schema.ObjectId,
-      ref: "planModel",
-      required: [true, "review must belong to a plan"],
-    },
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "userModel",
+    required: [true, "review must belong to a user"],
+  },
+  plan: {
+    type: mongoose.Schema.ObjectId,
+    ref: "planModel",
+    required: [true, "review must belong to a plan"],
   },
 });
 
