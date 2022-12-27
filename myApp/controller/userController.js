@@ -46,3 +46,7 @@ module.exports.getAllUser = async function getAllUser(req, res) {
   if (!users) return res.json({ message: "0 users now" });
   res.json({ message: "all users fetched", user: users });
 };
+
+module.exports.updateProfileImage = function updateProfileImage(req, res) {
+  res.json({ message: "file upload successfully" });
+};
